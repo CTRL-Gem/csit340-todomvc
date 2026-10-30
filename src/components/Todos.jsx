@@ -3,8 +3,14 @@ import { useState } from 'react'
 function Todos() {
   const [text, setText] = useState('')
   const [todos, setTodos] = useState([])
+  const [filter, setFilter] = useState('All')
   const activeCount = todos.filter(todo => !todo.completed).length
   const completedCount = todos.length - activeCount
+  const filteredTodos = todos.filter(todo => {
+    if (filter === 'Active') return !todo.completed
+    if (filter === 'Completed') return todo.completed
+    return true
+  })
 
   function handleSubmit(e) {
         e.preventDefault()
@@ -72,7 +78,7 @@ function Todos() {
                </label>
 
                 <ul>
-                  {todos.map((todo) => (
+                  {filteredTodos.map((todo) => (
                   <li
                     key={todo.id}
                     className="group relative flex items-center border-b border-[#ededed] text-2xl"
@@ -114,7 +120,8 @@ function Todos() {
                       <li>
                         <button
                           type="button"
-                          className="cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]"
+                          onClick={() => setFilter('All')}
+                          className={filter === 'All' ? "cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]" : "cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"}
                         >
                           All
                         </button>
@@ -122,7 +129,8 @@ function Todos() {
                       <li>
                         <button
                           type="button"
-                          className="cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"
+                          onClick={() => setFilter('Active')}
+                          className={filter === 'Active' ? "cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]" : "cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"}
                         >
                           Active
                         </button>
@@ -130,10 +138,11 @@ function Todos() {
                       <li>
                         <button
                           type="button"
-                          className="cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"
+                          onClick={() => setFilter('Completed')}
+                          className={filter === 'Completed' ? "cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]" : "cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10"}
                           >
                           Completed
-                        </button> 
+                        </button>
                       </li>
                   </ul>
 
